@@ -4,10 +4,9 @@ import os
 import mammoth
 import platform
 
-if platform.system() == "Windows":
-    import platform
+IS_WINDOWS = platform.system() == "Windows"
 
-if platform.system() == "Windows":
+if IS_WINDOWS:
     import comtypes.client
     import pythoncom
 
@@ -38,8 +37,13 @@ def convert_docx_to_pdf(input_path, output_folder):
     input_path = os.path.abspath(input_path)
     output_folder = os.path.abspath(output_folder)
 
+    if IS_WINDOWS:
+        soffice = r"C:\Program Files\LibreOffice\program\soffice.exe"
+    else:
+        soffice = "libreoffice"   # Linux command
+
     command = [
-        r"C:\Program Files\LibreOffice\program\soffice.exe",
+        soffice,
         "--headless",
         "--convert-to",
         "pdf",
@@ -56,9 +60,12 @@ def convert_docx_to_pdf(input_path, output_folder):
 
 
 # ===============================
-# WORD → PDF (MS Word COM)
+# WORD → PDF (Windows only)
 # ===============================
 def convert_word_to_pdf(input_path, output_path):
+
+    if not IS_WINDOWS:
+        raise Exception("MS Word conversion only works on Windows")
 
     pythoncom.CoInitialize()
 
@@ -76,9 +83,12 @@ def convert_word_to_pdf(input_path, output_path):
 
 
 # ===============================
-# POWERPOINT → PDF
+# POWERPOINT → PDF (Windows only)
 # ===============================
 def convert_ppt_to_pdf(input_path, output_path):
+
+    if not IS_WINDOWS:
+        raise Exception("PowerPoint conversion only works on Windows")
 
     pythoncom.CoInitialize()
 
@@ -97,9 +107,12 @@ def convert_ppt_to_pdf(input_path, output_path):
 
 
 # ===============================
-# EXCEL → PDF
+# EXCEL → PDF (Windows only)
 # ===============================
 def convert_excel_to_pdf(input_path, output_path):
+
+    if not IS_WINDOWS:
+        raise Exception("Excel conversion only works on Windows")
 
     pythoncom.CoInitialize()
 
