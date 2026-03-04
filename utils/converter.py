@@ -2,7 +2,10 @@ from pdf2docx import Converter
 import subprocess
 import os
 import mammoth
-import comtypes.client
+import platform
+
+if platform.system() == "Windows":
+    import comtypes.client
 import pythoncom
 
 
